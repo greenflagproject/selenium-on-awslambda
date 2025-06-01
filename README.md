@@ -1,0 +1,2 @@
+# selenium-on-awslambda
+JavaでSelenium開発したプログラムをAWS Lambdaで動作させるサンプルプログラム
