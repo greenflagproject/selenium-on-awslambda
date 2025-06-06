@@ -41,9 +41,7 @@ RUN apt install -y locales &&\
     locale-gen ja_JP.UTF-8
 # RUN apt install -y task-japanese locales-all
 
-### xvfb:ディスプレイ、印刷:cups
-RUN apt install -y xvfb cups dbus-x11 dbus-user-session
-### その他依存関係
+### 依存関係
 RUN apt install -y libasound2-dev libdbus-glib-1-dev libgtk2.0-0 libxss1 libgbm-dev \
       ca-certificates \
       fonts-liberation \
