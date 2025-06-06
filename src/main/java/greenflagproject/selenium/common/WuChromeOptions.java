@@ -117,12 +117,9 @@ public class WuChromeOptions extends ChromeOptions {
             addArguments("--disable-dev-shm-usage");    //This is frequently caused by incorrect permissions on /dev/shm.  Try 'sudo chmod 1777 /dev/shm' to fix.
 
             addArguments("--single-process");               //AWS動作に必須
-            addArguments("--profile-directory=Default");    //AWS動作に必須
-            addArguments("--disable-infobars");             //AWS動作に必須
 
 //            addArguments("--remote-debugging-pipe");      //なくてもAWS動作可能   //In this mode DevToolsActivePort is not used.
 //            addArguments("--disable-application-cache");  //なくてもAWS動作可能
-//            addArguments("--hide-scrollbars");            //なくてもAWS動作可能
 //            addArguments("--window-size=1280,1024");      //なくてもAWS動作可能
         }
     }

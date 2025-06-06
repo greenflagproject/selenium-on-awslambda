@@ -15,7 +15,7 @@ RUN apt update; apt install -y java-21-amazon-corretto-jdk
 ### Install Chromium
 ### https://www.chromium.org/chromium-projects/
 ARG CHROMIUM_VERSION=137.0.7151.55-3~deb12u1
-RUN apt install -y chromium-headless-shell=${CHROMIUM_VERSION} chromium-driver=${CHROMIUM_VERSION} chromium-common=${CHROMIUM_VERSION} chromium=${CHROMIUM_VERSION}
+RUN apt install -y chromium-driver=${CHROMIUM_VERSION} chromium-common=${CHROMIUM_VERSION} chromium=${CHROMIUM_VERSION}
 
 ### AWS Lambda 用カスタムランタイムの構築
 ### https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/runtimes-custom.html
@@ -39,46 +39,6 @@ COPY target/dependency/* ${LAMBDA_TASK_ROOT}/lib/
 RUN apt install -y locales &&\
     echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen &&\
     locale-gen ja_JP.UTF-8
-# RUN apt install -y task-japanese locales-all
-
-### 依存関係
-RUN apt install -y libasound2-dev libdbus-glib-1-dev libgtk2.0-0 libxss1 libgbm-dev \
-      ca-certificates \
-      fonts-liberation \
-      fonts-noto-color-emoji \
-      libasound2 \
-      libatk-bridge2.0-0 \
-      libatk1.0-0 \
-      libc6 \
-      libcairo2 \
-      libcups2 \
-      libdbus-1-3 \
-      libdrm2 \
-      libexpat1 \
-      libgbm1 \
-      libgcc-s1 \
-      libglib2.0-0 \
-      libgtk-3-0 \
-      libnspr4 \
-      libnss3 \
-      libpango-1.0-0 \
-      libpangocairo-1.0-0 \
-      libstdc++6 \
-      libx11-6 \
-      libx11-xcb1 \
-      libxcb1 \
-      libxcomposite1 \
-      libxcursor1 \
-      libxdamage1 \
-      libxext6 \
-      libxfixes3 \
-      libxi6 \
-      libxrandr2 \
-      libxrender1 \
-      libxtst6 \
-      lsb-release \
-      xdg-utils \
-     --no-install-recommends
 
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
@@ -87,22 +47,12 @@ ENV HOSTNAME=weboperator
 
 #AWS Lambda環境変数の設定
 ENV LANG=ja_JP.UTF-8
-ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
-#ENV DBUS_SESSION_BUS_ADDRESS=disabled
-ENV WDM_CACHEPATH=/tmp
-ENV HOME=/tmp
 ENV WEBDRIVER_CHROME_BINARY=/usr/bin/chromium
 ENV WEBDRIVER_CHROME_DRIVER=/usr/bin/chromedriver
-ENV EXECUTE_MAX_RETRY_TIMES=1
-# Selenium-managerの設定
-# https://www.selenium.dev/documentation/selenium_manager/
-# /tmpだとAWS上ではプログラムが実行できない(/var/runtimeはLAMBDA_RUNTIME_DIRの値)
-# /var/runtimeだと書き込めない
-# selenium-managerは動かないようにし、cacheは/tmpに作るようにした
-ENV SE_CACHE_PATH=/tmp
-
-# Selenium-managerを使わないようにする(true:使わない→selenium managerを無効にするの意味)
+# selenium-managerは動かないようにし、cacheはAWS実行時writeできる/tmpに作るようにした
 ENV SE_DISABLE_SELENIUM_MANAGER=true
+ENV SE_CACHE_PATH=/tmp
+ENV HOME=/tmp
 
 COPY docker/lambda-entrypoint.sh /
 RUN chmod +x /lambda-entrypoint.sh
