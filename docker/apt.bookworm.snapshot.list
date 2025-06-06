@@ -1,0 +1,3 @@
+# for CHROMIUM_VERSION=137.0.7151.55-3~deb12u1
+deb [trusted=yes] https://snapshot.debian.org/archive/debian/20250530T023825Z/ bookworm main
+deb [trusted=yes] https://snapshot.debian.org/archive/debian-security/20250530T023825Z/ bookworm-security main
